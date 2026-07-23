@@ -1,0 +1,5 @@
+{
+  "name": "stormforge-skills",
+  "description": "Personal skill repository currently containing stormforge-responses-image-gen.",
+  "skills": "./skills/"
+}

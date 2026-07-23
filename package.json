@@ -1,0 +1,12 @@
+{
+  "name": "stormforge-skills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal AI skill repository currently containing stormforge-responses-image-gen.",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-skills.mjs",
+    "test": "node scripts/test-all.mjs"
+  },
+  "license": "MIT"
+}

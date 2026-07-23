@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# local config / secrets
+.env
+.env.*
+!.env.example
+.project-config/
+.user-config/
+.stormforge-skills/.env
+.stormforge-skills/**/EXTEND.md
+*.local.md
+
+# logs / outputs
+logs/
+out/
+dist/
+build/
+coverage/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# generated art / temporary PSD exports
+*.tmp
+*.bak
+exports/
+reports/
+outputs/

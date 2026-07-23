@@ -1,0 +1,39 @@
+{
+  "name": "stormforge-skills",
+  "version": "0.1.0",
+  "description": "Personal Codex skill repository currently containing stormforge-responses-image-gen.",
+  "author": {
+    "name": "Leon Evans",
+    "email": "leonwork212@outlook.com",
+    "url": "https://github.com/leonEvans999"
+  },
+  "homepage": "https://github.com/leonEvans999/stormforge-skills",
+  "repository": "https://github.com/leonEvans999/stormforge-skills",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "skills",
+    "responses-api",
+    "image-generation",
+    "openai-compatible"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "StormForge Skills",
+    "shortDescription": "Responses API image generation skill.",
+    "longDescription": "Personal skill for generating raster images through an OpenAI-compatible Responses API relay using the image_generation tool.",
+    "developerName": "Leon Evans",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Interactive"
+    ],
+    "websiteURL": "https://github.com/leonEvans999/stormforge-skills",
+    "defaultPrompt": [
+      "Generate an image through a Responses API relay.",
+      "Save a generated image to disk with stormforge-responses-image-gen.",
+      "Use my Codex provider config for image generation."
+    ],
+    "brandColor": "#7C3AED"
+  }
+}

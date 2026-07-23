@@ -1,0 +1,3 @@
+display_name: StormForge Responses Image Gen
+short_description: Generate images via Responses API relays.
+default_prompt: Generate an image with the Responses API image_generation tool and save it to disk.
