@@ -1,94 +1,178 @@
 ---
 name: stormforge-responses-image-gen
-description: 'Generate raster images through an OpenAI-compatible Responses API relay using the image_generation tool. Use when the user wants AI image generation via POST /v1/responses with tools image_generation, especially for relay providers that do not support /images/generations.'
+description: 'Generate or edit raster images through an OpenAI-compatible Responses API relay using the image_generation tool. Use for text-to-image generation, reference-image editing, Base64 image input, design-led image requests, and relays that expose POST /v1/responses instead of the Images API.'
 ---
 
 # StormForge Responses Image Gen
 
-Generate images by calling an OpenAI-compatible `/responses` endpoint with the `image_generation` tool, then save the returned image to disk.
+Generate or edit images through an OpenAI-compatible `/responses` endpoint, then save the returned image and non-sensitive generation metadata to disk.
 
-## When to Use
+## Runtime
 
-Use this skill when the user asks to generate an image through a relay or custom OpenAI-compatible API that supports this request shape:
+Use Node.js 18 or newer. Do not install third-party packages.
+
+## Prompt Workflow
+
+Before invoking the script for a design-led request, convert vague user language into a concise visual design brief. Preserve all explicit requirements. Cover the objective, subject, composition, visual hierarchy, color system, typography, lighting/materials, art direction, and output constraints that materially affect the result.
+
+Read `references/design-prompting.md` for the reusable prompt structure and reference-image identity guidance. Do not silently rewrite prompts inside the script; pass the finalized brief through `--prompt` or `--prompt-file`.
+
+## Generate an Image
+
+Use the official-compatible default request shape. The script omits a tool-level model unless the relay requires one.
+
+```powershell
+node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
+  --prompt-file "prompts\hero-image.md" `
+  --image "outputs\hero-image.png" `
+  --model "gpt-5.6-sol" `
+  --use-codex-config
+```
+
+The default image tool settings are:
+
+```json
+{
+  "type": "image_generation",
+  "size": "2048x1152",
+  "quality": "high"
+}
+```
+
+Override them when needed:
+
+```powershell
+node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
+  --prompt "A centered product icon with a clean white background." `
+  --image "outputs\product-icon.png" `
+  --tool-size "1024x1024" `
+  --tool-quality "medium" `
+  --use-codex-config
+```
+
+## Relay-Specific Tool Model
+
+Use `--model` for the outer Responses model. Do not assume it selects the image tool model.
+
+Only add a tool-level model when the relay explicitly requires it:
+
+```powershell
+node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
+  --prompt-file "prompts\poster.md" `
+  --image "outputs\poster.png" `
+  --model "gpt-5.6-sol" `
+  --tool-model "gpt-5.6-sol" `
+  --use-codex-config
+```
+
+`OPENAI_IMAGE_TOOL_MODEL` provides the same relay-specific override. The CLI value takes precedence.
+
+## Reference Images
+
+Pass `--input-image` repeatedly to provide one or more references:
+
+```powershell
+node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
+  --prompt-file "prompts\product-variation.md" `
+  --input-image "inputs\product.png" `
+  --input-image "inputs\style.png" `
+  --image "outputs\product-variation.png" `
+  --use-codex-config
+```
+
+`--input-image <value>` accepts:
+
+- A local PNG, JPEG, WebP, or GIF path
+- Raw Base64 image data
+- A complete `data:image/...;base64,...` URL
+
+Convert local images to inline Base64 data URLs before the request. Place them in `input[0].content` as `input_image` items. Never log Base64 data. Do not upload images to `/v1/files`.
+
+Without input images, keep `input` as a prompt string. With input images, send structured content:
 
 ```json
 {
   "model": "gpt-5.6-sol",
-  "input": "Generate an image...",
-  "tools": [{ "type": "image_generation", "model": "gpt-5.6-sol" }]
+  "input": [
+    {
+      "role": "user",
+      "content": [
+        { "type": "input_text", "text": "Edit this image..." },
+        { "type": "input_image", "image_url": "data:image/png;base64,..." }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "type": "image_generation",
+      "size": "2048x1152",
+      "quality": "high"
+    }
+  ]
 }
 ```
 
-Do not use this skill for the native Codex `image_gen` tool or for providers that only support `/images/generations`. The image-generation tool model is always set to `gpt-5.6-sol` by default; users do not need to pass an image-model parameter.
-
-## Runtime
-
-Use Node.js 18 or newer. No Bun, npm package install, or third-party dependency is required.
-
-## Script
-
-Run the bundled Node script from this repository:
-
-```powershell
-node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
-  --prompt "A simple carrot icon on a white background." `
-  --image "outputs\carrot.png" `
-  --model "gpt-5.6-sol" `
-  --tool-size "1536x1024" `
-  --tool-quality "high" `
-  --use-codex-config
-```
-
-After installing the skill into Codex, the same script can also be run from `$env:USERPROFILE\.codex\skills\stormforge-responses-image-gen\scripts\generate.mjs`.
-
 ## Configuration
 
-Preferred environment variables:
+Use these environment variables when appropriate:
 
 - `OPENAI_BASE_URL`: relay base URL, usually ending in `/v1`
 - `OPENAI_API_KEY`: relay API key
-- `OPENAI_RESPONSES_IMAGE_MODEL`: default image-capable Responses model
-- `OPENAI_IMAGE_MODEL`: fallback model variable
+- `OPENAI_RESPONSES_IMAGE_MODEL`: default outer Responses model
+- `OPENAI_IMAGE_MODEL`: fallback outer model variable
+- `OPENAI_IMAGE_TOOL_MODEL`: optional relay-specific tool model
 - `RESPONSES_IMAGE_TIMEOUT_MS`: request timeout in milliseconds, default `120000`
 - `OPENAI_REQUEST_TIMEOUT_MS`: fallback request timeout variable
 
-If the user already configured Codex with a custom provider, use `--use-codex-config` only when appropriate. The script reads these fields from `$HOME/.codex/config.toml` without printing secrets:
+Use `--use-codex-config` only when the user wants the script to reuse the active Codex provider. Read the active model, provider base URL, and bearer token from `$HOME/.codex/config.toml` without printing secrets.
 
-- active `model`
-- active `model_provider`
-- provider `base_url`
-- provider `experimental_bearer_token`
+CLI options:
 
-CLI flags override config/env:
-
+- `--prompt <text>` or `--prompt-file <path>`
+- `--input-image <path|base64|data-url>`; repeat for multiple images
+- `--image <output-path>`
+- `--model <model>` for the outer Responses model
+- `--tool-model <model>` for an explicit relay-specific tool override
+- `--tool-size <size>`; default `2048x1152`
+- `--tool-quality <auto|low|medium|high>`; default `high`
+- `--metadata <path>` to choose the metadata path
+- `--no-metadata` to disable metadata output
 - `--base-url <url>`
 - `--api-key <key>`
-- `--model <model>`
-- `--prompt <text>` or `--prompt-file <path>`
-- `--image <output-path>`
-- `--tool-size <size>` optionally adds `size` to the image_generation tool
-- `--tool-quality <auto|low|medium|high>` optionally adds `quality` to the image_generation tool; omitted values use the provider default
-- `--timeout-ms <milliseconds>` overrides the default 120000ms request timeout
+- `--timeout-ms <milliseconds>`
 
-The script always sends `model: "gpt-5.6-sol"` inside the `image_generation` tool. It uses IPv4-first DNS resolution and a 120-second default timeout for slow relays.
+CLI values override environment and Codex configuration values.
 
-## Prompting
+## Metadata and Diagnostics
 
-Put exact dimensions and style in the prompt for maximum relay compatibility, for example:
+Write metadata beside the image by default using `<image-path>.json`, for example:
 
 ```text
-A cute pixel art carrot, centered composition, 1024x1024 square canvas, crisp 16-bit pixel art style, chunky blocky orange carrot body with green leafy top, subtle pixel shading, charming game item icon, clean white background, no text, no watermark.
+outputs/hero-image.png
+outputs/hero-image.png.json
 ```
+
+Include:
+
+- Outer model
+- Optional tool model
+- Requested prompt
+- `revised_prompt` when present in the Responses result
+- Requested size and quality
+- Input-image count
+- Output path and byte count
+
+Never include API keys, bearer tokens, Base64 image data, or the complete API response. Use the metadata to confirm whether the relay revised the prompt and which request settings were used.
 
 ## Output Handling
 
-The script accepts common Responses image shapes and extracts:
+Extract common Responses image shapes:
 
 - `data:image/...;base64,...`
 - `b64_json`
 - `base64`
 - `image_base64`
-- `result` fields containing image base64
-- image URLs returned by the relay
+- `result` fields containing image Base64
+- Direct image URLs returned by the relay
 
-After generation, verify the output file exists and has nonzero size. If extraction fails, inspect the script error message; it includes the response fields seen but not the API key.
+Verify that the output file exists and has nonzero size. If extraction fails, report only the response shape and output item types, not credentials or image payloads.
