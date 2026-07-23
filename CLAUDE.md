@@ -37,3 +37,9 @@ skills/
 ```bash
 npm run validate
 ```
+
+## Versioning and pushes
+
+- Before every Git push, increment the version in `package.json`.
+- Use a patch increment by default. Use a minor or major increment only when the user explicitly requests it or the change clearly requires it.
+- Include the version change in the same commit being pushed.
