@@ -8,14 +8,15 @@ import path from "node:path";
 import os from "node:os";
 import { URL } from "node:url";
 
-const DEFAULT_IMAGE_TOOL_MODEL = "gpt-image-2";
+const DEFAULT_IMAGE_TOOL_MODEL = "gpt-5.6-sol";
+const IMAGE_TOOL_QUALITIES = new Set(["auto", "low", "medium", "high"]);
 const DEFAULT_REQUEST_TIMEOUT_MS = 120000;
 
 dns.setDefaultResultOrder("ipv4first");
 
 function usage() {
   console.error(`Usage:
-  node generate.mjs --prompt <text> --image <path> [--model <id>] [--base-url <url>] [--api-key <key>] [--use-codex-config] [--tool-size 1024x1024] [--timeout-ms 120000]
+  node generate.mjs --prompt <text> --image <path> [--model <id>] [--base-url <url>] [--api-key <key>] [--use-codex-config] [--tool-size 1024x1024] [--tool-quality high] [--timeout-ms 120000]
   node generate.mjs --prompt-file <path> --image <path> --use-codex-config`);
   process.exit(2);
 }
@@ -37,6 +38,7 @@ function parseArgs(argv) {
     else if (arg === "--api-key") options.apiKey = next();
     else if (arg === "--use-codex-config") options.useCodexConfig = true;
     else if (arg === "--tool-size") options.toolSize = next();
+    else if (arg === "--tool-quality") options.toolQuality = next();
     else if (arg === "--timeout-ms") options.timeoutMs = next();
     else if (arg === "--help" || arg === "-h") usage();
     else throw new Error(`Unknown argument: ${arg}`);
@@ -92,6 +94,15 @@ function parseTimeoutMs(value) {
     throw new Error(`Invalid timeout: ${value}`);
   }
   return timeoutMs;
+}
+
+function parseToolQuality(value) {
+  if (!value) return undefined;
+  const normalized = value.toLowerCase();
+  if (!IMAGE_TOOL_QUALITIES.has(normalized)) {
+    throw new Error(`Invalid tool quality: ${value}. Expected one of: auto, low, medium, high.`);
+  }
+  return normalized;
 }
 
 function requestBuffer(url, { method = "GET", headers = {}, body, timeoutMs, redirects = 3 } = {}) {
@@ -240,6 +251,7 @@ async function main() {
   const baseUrl = options.baseUrl || process.env.OPENAI_BASE_URL || codex.baseUrl;
   const apiKey = options.apiKey || process.env.OPENAI_API_KEY || codex.token;
   const timeoutMs = parseTimeoutMs(options.timeoutMs || process.env.RESPONSES_IMAGE_TIMEOUT_MS || process.env.OPENAI_REQUEST_TIMEOUT_MS);
+  const toolQuality = parseToolQuality(options.toolQuality);
 
   if (!model) throw new Error("Missing model. Pass --model or set OPENAI_RESPONSES_IMAGE_MODEL.");
   if (!baseUrl) throw new Error("Missing base URL. Pass --base-url, set OPENAI_BASE_URL, or use --use-codex-config.");
@@ -247,9 +259,10 @@ async function main() {
 
   const tool = { type: "image_generation", model: DEFAULT_IMAGE_TOOL_MODEL };
   if (options.toolSize) tool.size = options.toolSize;
+  if (toolQuality) tool.quality = toolQuality;
   const body = { model, input: prompt, tools: [tool] };
 
-  console.error(`Using responses / ${model}; image tool / ${DEFAULT_IMAGE_TOOL_MODEL}; timeout ${timeoutMs}ms`);
+  console.error(`Using responses / ${model}; image tool / ${DEFAULT_IMAGE_TOOL_MODEL}; quality ${toolQuality || "provider default"}; timeout ${timeoutMs}ms`);
   const result = await postJson(`${normalizeBaseUrl(baseUrl)}/responses`, body, { apiKey, timeoutMs });
   let bytes;
   const base64 = findBase64(result);

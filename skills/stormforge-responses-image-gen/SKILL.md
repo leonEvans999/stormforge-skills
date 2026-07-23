@@ -15,11 +15,11 @@ Use this skill when the user asks to generate an image through a relay or custom
 {
   "model": "gpt-5.6-sol",
   "input": "Generate an image...",
-  "tools": [{ "type": "image_generation", "model": "gpt-image-2" }]
+  "tools": [{ "type": "image_generation", "model": "gpt-5.6-sol" }]
 }
 ```
 
-Do not use this skill for the native Codex `image_gen` tool or for providers that only support `/images/generations`. The image-generation tool model is always set to `gpt-image-2` by default; users do not need to pass an image-model parameter.
+Do not use this skill for the native Codex `image_gen` tool or for providers that only support `/images/generations`. The image-generation tool model is always set to `gpt-5.6-sol` by default; users do not need to pass an image-model parameter.
 
 ## Runtime
 
@@ -34,6 +34,8 @@ node ".\skills\stormforge-responses-image-gen\scripts\generate.mjs" `
   --prompt "A simple carrot icon on a white background." `
   --image "outputs\carrot.png" `
   --model "gpt-5.6-sol" `
+  --tool-size "1536x1024" `
+  --tool-quality "high" `
   --use-codex-config
 ```
 
@@ -65,9 +67,10 @@ CLI flags override config/env:
 - `--prompt <text>` or `--prompt-file <path>`
 - `--image <output-path>`
 - `--tool-size <size>` optionally adds `size` to the image_generation tool
+- `--tool-quality <auto|low|medium|high>` optionally adds `quality` to the image_generation tool; omitted values use the provider default
 - `--timeout-ms <milliseconds>` overrides the default 120000ms request timeout
 
-The script always sends `model: "gpt-image-2"` inside the `image_generation` tool. It uses IPv4-first DNS resolution and a 120-second default timeout for slow relays.
+The script always sends `model: "gpt-5.6-sol"` inside the `image_generation` tool. It uses IPv4-first DNS resolution and a 120-second default timeout for slow relays.
 
 ## Prompting
 
