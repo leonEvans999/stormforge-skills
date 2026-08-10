@@ -1,0 +1,3 @@
+display_name: StormForge Image Gen
+short_description: Generate and edit images through OpenAI-compatible Images API relays.
+default_prompt: Create a clear visual brief, generate or edit the requested image through the Images API, save the unmodified returned bytes, and report the output path plus any size or format warnings.

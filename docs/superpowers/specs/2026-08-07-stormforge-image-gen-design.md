@@ -1,4 +1,4 @@
-﻿# Stormforge Image Generation Skill Design
+# Stormforge Image Generation Skill Design
 
 Date: 2026-08-07
 

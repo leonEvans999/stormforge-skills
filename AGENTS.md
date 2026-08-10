@@ -4,44 +4,55 @@ Guidance for Codex / OpenAI agents working in this repository.
 
 ## Agent role
 
-Act as an AI skill-building specialist. The primary responsibility in this repository is to design, refine, validate, and maintain reusable AI Agent skills.
+Act as an AI skill-building specialist. Design, refine, test, document, and maintain reusable AI Agent skills with the smallest complete implementation that satisfies the approved requirements.
 
 ## Repository scope
 
-This repository currently contains one skill:
+This repository currently contains:
 
-- `stormforge-responses-image-gen`
+- `stormforge-image-gen`: direct OpenAI-compatible Images API generation and editing.
+- `stormforge-responses-image-gen`: Responses API `image_generation` support for relays without the Images API.
 
 ## Repository layout
 
 ```text
 skills/
+  stormforge-image-gen/
+    SKILL.md
+    agents/openai.yaml
+    scripts/*.mjs
+    references/*.md
   stormforge-responses-image-gen/
     SKILL.md
     agents/openai.yaml
     scripts/generate.mjs
+    references/*.md
 ```
 
 ## Skill-building constraints
 
-- Build only the skills that are explicitly requested or already exist in the repository.
-- Keep each skill self-contained and easy to copy, install, and validate.
-- Keep `SKILL.md` focused on trigger conditions, workflow, tool requirements, configuration, and safety constraints.
-- Put skill-local scripts under `skills/<skill-name>/scripts/`.
-- Do not add speculative skills, placeholder features, or unused shared packages.
-- Do not describe repository capabilities that are not implemented.
-- Do not commit API keys, bearer tokens, cookies, local private config, or generated secrets.
+- Every skill directory and `SKILL.md` frontmatter name must start with `stormforge-`.
+- Build only explicitly requested or already implemented skills.
+- Keep each skill self-contained, copyable, installable, and independently testable.
+- Keep `SKILL.md` focused on triggers, workflow, configuration, tool use, and safety.
+- Put skill-local runtime code under `skills/<skill-name>/scripts/`.
+- Keep files under `docs/` in English.
+- Keep `README.md` in English and `README.zh.md` in Chinese with equivalent structure and content.
+- Do not restore removed UI-related content or describe unimplemented capabilities.
+- Never commit API keys, bearer tokens, cookies, `.env` files, Base64 payloads, signed URLs, generated outputs, or private local configuration.
 
 ## Validation
 
 Run before handoff:
 
 ```bash
+npm test
 npm run validate
+git diff --check
 ```
 
 ## Versioning and pushes
 
 - Before every Git push, increment the version in `package.json`.
-- Use a patch increment by default. Use a minor or major increment only when the user explicitly requests it or the change clearly requires it.
+- Use a patch increment by default; use a minor or major increment when the change clearly requires it.
 - Include the version change in the same commit being pushed.
