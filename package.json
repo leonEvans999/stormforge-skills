@@ -1,6 +1,6 @@
 {
   "name": "stormforge-skills",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Personal AI skill repository for direct Images API and Responses API image generation.",
   "type": "module",
