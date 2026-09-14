@@ -1,0 +1,3 @@
+name: stormforge-grok-imagine-image
+short_description: Generate images with Grok Imagine through a local OpenAI-compatible API configuration.
+default_prompt: Use the local Grok configuration and xai/grok-imagine-image to generate the requested image, save it to disk, and report the output path.

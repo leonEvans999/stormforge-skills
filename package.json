@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "validate": "node scripts/validate-skills.mjs",
-    "test": "node --test tests/stormforge-image-gen/core.test.mjs tests/stormforge-image-gen/config.test.mjs tests/stormforge-image-gen/batch.test.mjs tests/stormforge-image-gen/integration.test.mjs && node scripts/test-all.mjs",
+    "test": "node --test tests/stormforge-image-gen/core.test.mjs tests/stormforge-image-gen/config.test.mjs tests/stormforge-image-gen/batch.test.mjs tests/stormforge-image-gen/integration.test.mjs tests/stormforge-grok-imagine-image/generate.test.mjs && node scripts/test-all.mjs",
     "test:image-live": "node tests/stormforge-image-gen/live-test.mjs"
   },
   "license": "MIT"

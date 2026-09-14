@@ -17,7 +17,7 @@ A personal repository of reusable AI Agent skills by Leon Evans.
 | Skill | API | Intended use |
 | --- | --- | --- |
 | `stormforge-image-gen` | Images API | Preferred direct `gpt-image-2` generation and editing, with references, Base64 inputs, masks, custom sizes, batches, retries, and resume. |
-| `stormforge-responses-image-gen` | Responses API | Image generation and editing for relays that expose only the `/responses` `image_generation` tool. |
+| `stormforge-responses-image-gen` | Responses API | Image generation and editing for relays that expose only the `/responses` `image_generation` tool. |\n| `stormforge-grok-imagine-image` | Images API | Grok Imagine generation through the local `%USERPROFILE%\\.grok\\config.toml` configuration. |
 
 ## Repository Structure
 

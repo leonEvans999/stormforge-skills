@@ -17,7 +17,7 @@ Leon Evans 的个人可复用 AI Agent 技能仓库。
 | 技能 | API | 适用场景 |
 | --- | --- | --- |
 | `stormforge-image-gen` | Images API | 首选的 `gpt-image-2` 直接生成与编辑技能，支持参考图、Base64 输入、蒙版、自定义尺寸、批处理、重试和断点续跑。 |
-| `stormforge-responses-image-gen` | Responses API | 用于仅提供 `/responses` `image_generation` 工具的中转服务，支持图片生成和编辑。 |
+| `stormforge-responses-image-gen` | Responses API | 用于仅提供 `/responses` `image_generation` 工具的中转服务，支持图片生成和编辑。 |\n| `stormforge-grok-imagine-image` | Images API | 使用本地 `%USERPROFILE%\\.grok\\config.toml` 配置，通过 API 调用 Grok Imagine 生成图片。 |
 
 ## 仓库结构
 
