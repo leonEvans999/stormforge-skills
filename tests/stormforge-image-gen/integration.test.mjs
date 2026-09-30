@@ -38,8 +38,9 @@ test("text generation sends JSON and preserves returned Base64 bytes", async () 
   });
   try {
     const output = path.join(temp, "out.png");
-    const result = await main(["--prompt", "test", "--output", output, "--base-url", baseUrl, "--api-key", "test", "--model", "gpt-image-2"], { logger: silentLogger, cwd: temp, env: {} });
+    const result = await main(["--prompt", "test", "--output", output, "--base-url", baseUrl, "--api-key", "test", "--model", "codex/gpt-image-2"], { logger: silentLogger, cwd: temp, env: {} });
     assert.equal(result.exitCode, 0);
+    assert.equal(requestBody.model, "codex/gpt-image-2");
     assert.equal(requestBody.output_format, "png");
     assert.equal(requestBody.size, "2048x1152");
     assert.equal(requestBody.n, 1);

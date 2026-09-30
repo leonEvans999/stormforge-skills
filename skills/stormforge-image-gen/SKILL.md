@@ -1,11 +1,11 @@
 ---
 name: stormforge-image-gen
-description: Generate or edit raster images through an OpenAI-compatible Images API, including gpt-image-2 text-to-image, reference images, Base64 inputs, masks, exact custom sizes, multiple outputs, batch concurrency, retries, resume, and non-sensitive metadata. Use this skill when the provider exposes /images/generations and /images/edits rather than the Responses API image_generation tool.
+description: Generate or edit raster images through an OpenAI-compatible Images API, including codex/gpt-image-2 text-to-image, reference images, Base64 inputs, masks, exact custom sizes, multiple outputs, batch concurrency, retries, resume, and non-sensitive metadata. Use this skill when the provider exposes /images/generations and /images/edits rather than the Responses API image_generation tool.
 ---
 
 # StormForge Image Gen
 
-Use this skill for direct image generation and editing through an OpenAI-compatible Images API. It defaults to NxtPath and `gpt-image-2` while allowing the base URL and image model to be configured.
+Use this skill for direct image generation and editing through an OpenAI-compatible Images API. It defaults to NxtPath and `codex/gpt-image-2` while allowing the base URL and image model to be configured.
 
 ## When to use
 
@@ -25,7 +25,7 @@ Use `stormforge-responses-image-gen` instead when the relay only exposes `/respo
 - Node.js 20 or newer.
 - `OPENAI_API_KEY` for the selected relay.
 - Optional `OPENAI_BASE_URL`; default: `https://api.nxtpath.ai/v1`.
-- Optional `OPENAI_IMAGE_MODEL`; default: `gpt-image-2`.
+- Optional `OPENAI_IMAGE_MODEL`; default: `codex/gpt-image-2`.
 
 Never print, store in metadata, or commit API keys, image Base64 payloads, signed URLs, or complete raw API responses.
 
@@ -82,7 +82,7 @@ node ".\skills\stormforge-image-gen\scripts\main.mjs" `
 
 ## Important controls
 
-- `--size <WxH|auto>`: exact size. `gpt-image-2` custom sizes are validated locally.
+- `--size <WxH|auto>`: exact size. `codex/gpt-image-2` custom sizes are validated locally.
 - `--ar <ratio> --resolution <1k|2k|4k>`: calculate a valid custom size.
 - `--quality <auto|low|medium|high>`.
 - `--format <png|jpeg|webp>` and optional JPEG/WebP `--compression <0-100>`.

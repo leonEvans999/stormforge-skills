@@ -10,13 +10,13 @@ A personal repository of reusable AI Agent skills by Leon Evans.
 
 ## Overview
 
-`stormforge-skills` currently provides two self-contained image-generation skills. Use the direct Images API skill for providers such as NxtPath that expose `gpt-image-2` through `/images/generations` and `/images/edits`. Keep the Responses API skill for relays that expose image generation only through `/responses`.
+`stormforge-skills` currently provides two self-contained image-generation skills. Use the direct Images API skill for providers such as NxtPath that expose `codex/gpt-image-2` through `/images/generations` and `/images/edits`. Keep the Responses API skill for relays that expose image generation only through `/responses`.
 
 ## Available Skills
 
 | Skill | API | Intended use |
 | --- | --- | --- |
-| `stormforge-image-gen` | Images API | Preferred direct `gpt-image-2` generation and editing, with references, Base64 inputs, masks, custom sizes, batches, retries, and resume. |
+| `stormforge-image-gen` | Images API | Preferred direct `codex/gpt-image-2` generation and editing, with references, Base64 inputs, masks, custom sizes, batches, retries, and resume. |
 | `stormforge-responses-image-gen` | Responses API | Image generation and editing for relays that expose only the `/responses` `image_generation` tool. |\n| `stormforge-grok-imagine-image` | Images API | Grok Imagine generation through the local `%USERPROFILE%\\.grok\\config.toml` configuration. |
 
 ## Repository Structure
@@ -57,7 +57,7 @@ node ".\skills\stormforge-image-gen\scripts\main.mjs" `
   --output "outputs\hero.png"
 ```
 
-The default base URL is `https://api.nxtpath.ai/v1`, the default model is `gpt-image-2`, and the default size is `2048x1152`. Override them with `OPENAI_BASE_URL`, `OPENAI_IMAGE_MODEL`, or CLI options.
+The default base URL is `https://api.nxtpath.ai/v1`, the default model is `codex/gpt-image-2`, and the default size is `2048x1152`. Override them with `OPENAI_BASE_URL`, `OPENAI_IMAGE_MODEL`, or CLI options.
 
 For a relay that only supports Responses API image generation:
 

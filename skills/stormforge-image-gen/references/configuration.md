@@ -16,7 +16,7 @@ Defaults:
 
 ```text
 OPENAI_BASE_URL=https://api.nxtpath.ai/v1
-OPENAI_IMAGE_MODEL=gpt-image-2
+OPENAI_IMAGE_MODEL=codex/gpt-image-2
 size=2048x1152
 quality=high
 format=png
@@ -53,7 +53,7 @@ Example:
 
 ```json
 {
-  "model": "gpt-image-2",
+  "model": "codex/gpt-image-2",
   "size": "2048x1152",
   "quality": "high",
   "format": "png",
@@ -80,12 +80,12 @@ built-in defaults
 
 `--use-codex-config` reads only the selected provider's `base_url` and `experimental_bearer_token`. It does not use the Codex text model as the image model.
 
-## Custom-size limits for `gpt-image-2`
+## Custom-size limits for `codex/gpt-image-2`
 
 - Width and height must be multiples of 16.
 - Longest edge must not exceed 3840 pixels.
 - Aspect ratio must not exceed 3:1.
 - Total pixels must be between 655,360 and 8,294,400.
-- Transparent background is rejected for `gpt-image-2`.
+- Transparent background is rejected for `codex/gpt-image-2`.
 
 Valid examples include `1024x1024`, `1536x1024`, `2048x1152`, `2048x2048`, `2880x2880`, and `3840x2160`.

@@ -12,7 +12,7 @@ Core options:
   --input-image, --ref <value>    Local path, Data URL, or raw Base64 (repeatable)
   --input-image-base64-file <p>   Read Base64 or Data URL from a file
   --mask <path>                   PNG mask for one-image edits
-  --model <id>                    Image model (default: gpt-image-2)
+  --model <id>                    Image model (default: codex/gpt-image-2)
   --base-url <url>                OpenAI-compatible API base URL
   --api-key <key>                 API key (prefer OPENAI_API_KEY)
   --use-codex-config              Read base URL and token from Codex config

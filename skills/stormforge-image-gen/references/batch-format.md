@@ -7,7 +7,7 @@ A batch file may contain a top-level task array or this versioned object:
   "version": 1,
   "jobs": 4,
   "defaults": {
-    "model": "gpt-image-2",
+    "model": "codex/gpt-image-2",
     "size": "2048x1152",
     "quality": "high",
     "format": "png"

@@ -5,7 +5,7 @@ import { exists, parsePixelSize, SkillError } from "./utils.mjs";
 
 export const DEFAULTS = Object.freeze({
   baseUrl: "https://api.nxtpath.ai/v1",
-  model: "gpt-image-2",
+  model: "codex/gpt-image-2",
   size: "2048x1152",
   quality: "high",
   format: "png",
@@ -237,14 +237,15 @@ export function validateTaskConfig(raw, { requireConnection = true } = {}) {
   if (!new Set(["full", "hash", "omit"]).has(config.metadataPrompt)) throw new SkillError(`Unsupported metadata prompt mode: ${config.metadataPrompt}`, "ValidationError");
   if (config.size !== undefined && config.ar !== undefined) throw new SkillError("size and ar cannot be set at the same layer.", "ValidationError");
   config.size = config.ar || config.resolution ? sizeFromAspectRatio(config.ar || "1:1", config.resolution || "2k") : String(config.size || DEFAULTS.size).toLowerCase();
-  if (config.model === "gpt-image-2") validateGptImage2Size(config.size);
+  const isGptImage2 = config.model === "gpt-image-2" || config.model === "codex/gpt-image-2";
+  if (isGptImage2) validateGptImage2Size(config.size);
   else if (config.size !== "auto" && !parsePixelSize(config.size)) throw new SkillError(`Invalid size: ${config.size}`, "ValidationError");
   const inferred = inferFormatFromOutput(config.output);
   config.format = String(config.format || inferred || DEFAULTS.format).toLowerCase();
   if (!new Set(["png", "jpeg", "webp"]).has(config.format)) throw new SkillError(`Unsupported output format: ${config.format}`, "ValidationError");
   if (inferred && inferred !== config.format) throw new SkillError(`Output extension implies ${inferred}, but --format requests ${config.format}.`, "ValidationError");
   if (config.compression !== undefined && config.format === "png") throw new SkillError("compression is supported only for jpeg and webp.", "ValidationError");
-  if (config.model === "gpt-image-2" && config.background === "transparent") throw new SkillError("gpt-image-2 does not support transparent backgrounds.", "ValidationError");
+  if (isGptImage2 && config.background === "transparent") throw new SkillError("gpt-image-2 does not support transparent backgrounds.", "ValidationError");
   if (requireConnection && !config.apiKey) throw new SkillError("Missing OPENAI_API_KEY (or --api-key).", "ConfigurationError");
   try { new URL(config.baseUrl); } catch { throw new SkillError(`Invalid base URL: ${config.baseUrl}`, "ConfigurationError"); }
   return config;

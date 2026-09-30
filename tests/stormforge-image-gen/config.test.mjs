@@ -38,3 +38,18 @@ test("credential-like preference fields are rejected", async () => {
 test("transparent background is rejected for gpt-image-2", () => {
   assert.throws(() => validateTaskConfig({ apiKey: "x", baseUrl: "http://localhost", model: "gpt-image-2", output: "x.png", background: "transparent" }), /does not support transparent/);
 });
+
+
+test("default model is codex/gpt-image-2 without local overrides", async () => {
+  const temp = await mkdtemp(path.join(os.tmpdir(), "stormforge-model-default-"));
+  try {
+    const config = await resolveGlobalConfig({}, { cwd: temp, homeDir: temp, env: {} });
+    assert.equal(config.model, "codex/gpt-image-2");
+  } finally { await rm(temp, { recursive: true, force: true }); }
+});
+
+test("codex/gpt-image-2 keeps existing image-model validation", () => {
+  const config = { apiKey: "x", baseUrl: "http://localhost", model: "codex/gpt-image-2", output: "x.png" };
+  assert.throws(() => validateTaskConfig({ ...config, size: "1001x1001" }), /Invalid gpt-image-2 size/);
+  assert.throws(() => validateTaskConfig({ ...config, background: "transparent" }), /does not support transparent/);
+});

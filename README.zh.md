@@ -10,13 +10,13 @@ Leon Evans 的个人可复用 AI Agent 技能仓库。
 
 ## 概述
 
-`stormforge-skills` 当前提供两个彼此独立的图片生成技能。对于 NxtPath 这类通过 `/images/generations` 和 `/images/edits` 提供 `gpt-image-2` 的服务，优先使用直接 Images API 技能；对于仅通过 `/responses` 提供图片生成能力的中转服务，继续使用 Responses API 技能。
+`stormforge-skills` 当前提供两个彼此独立的图片生成技能。对于 NxtPath 这类通过 `/images/generations` 和 `/images/edits` 提供 `codex/gpt-image-2` 的服务，优先使用直接 Images API 技能；对于仅通过 `/responses` 提供图片生成能力的中转服务，继续使用 Responses API 技能。
 
 ## 可用技能
 
 | 技能 | API | 适用场景 |
 | --- | --- | --- |
-| `stormforge-image-gen` | Images API | 首选的 `gpt-image-2` 直接生成与编辑技能，支持参考图、Base64 输入、蒙版、自定义尺寸、批处理、重试和断点续跑。 |
+| `stormforge-image-gen` | Images API | 首选的 `codex/gpt-image-2` 直接生成与编辑技能，支持参考图、Base64 输入、蒙版、自定义尺寸、批处理、重试和断点续跑。 |
 | `stormforge-responses-image-gen` | Responses API | 用于仅提供 `/responses` `image_generation` 工具的中转服务，支持图片生成和编辑。 |\n| `stormforge-grok-imagine-image` | Images API | 使用本地 `%USERPROFILE%\\.grok\\config.toml` 配置，通过 API 调用 Grok Imagine 生成图片。 |
 
 ## 仓库结构
@@ -57,7 +57,7 @@ node ".\skills\stormforge-image-gen\scripts\main.mjs" `
   --output "outputs\hero.png"
 ```
 
-默认接口地址为 `https://api.nxtpath.ai/v1`，默认模型为 `gpt-image-2`，默认尺寸为 `2048x1152`。可以通过 `OPENAI_BASE_URL`、`OPENAI_IMAGE_MODEL` 或 CLI 参数覆盖这些配置。
+默认接口地址为 `https://api.nxtpath.ai/v1`，默认模型为 `codex/gpt-image-2`，默认尺寸为 `2048x1152`。可以通过 `OPENAI_BASE_URL`、`OPENAI_IMAGE_MODEL` 或 CLI 参数覆盖这些配置。
 
 如果中转服务只支持 Responses API 图片生成：
 
