@@ -5,7 +5,7 @@ import { exists, parsePixelSize, SkillError } from "./utils.mjs";
 
 export const DEFAULTS = Object.freeze({
   baseUrl: "https://api.nxtpath.ai/v1",
-  model: "codex/gpt-image-2",
+  model: "openai/gpt-image-2.6-flare",
   size: "2048x1152",
   quality: "high",
   format: "png",

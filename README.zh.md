@@ -57,7 +57,7 @@ node ".\skills\stormforge-image-gen\scripts\main.mjs" `
   --output "outputs\hero.png"
 ```
 
-默认接口地址为 `https://api.nxtpath.ai/v1`，默认模型为 `codex/gpt-image-2`，默认尺寸为 `2048x1152`。可以通过 `OPENAI_BASE_URL`、`OPENAI_IMAGE_MODEL` 或 CLI 参数覆盖这些配置。
+默认接口地址为 `https://api.nxtpath.ai/v1`，默认模型为 `openai/gpt-image-2.6-flare`，默认尺寸为 `2048x1152`。可以通过 `OPENAI_BASE_URL`、`OPENAI_IMAGE_MODEL` 或 CLI 参数覆盖这些配置。
 
 如果中转服务只支持 Responses API 图片生成：
 

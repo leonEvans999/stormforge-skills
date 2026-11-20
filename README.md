@@ -57,7 +57,7 @@ node ".\skills\stormforge-image-gen\scripts\main.mjs" `
   --output "outputs\hero.png"
 ```
 
-The default base URL is `https://api.nxtpath.ai/v1`, the default model is `codex/gpt-image-2`, and the default size is `2048x1152`. Override them with `OPENAI_BASE_URL`, `OPENAI_IMAGE_MODEL`, or CLI options.
+The default base URL is `https://api.nxtpath.ai/v1`, the default model is `openai/gpt-image-2.6-flare`, and the default size is `2048x1152`. Override them with `OPENAI_BASE_URL`, `OPENAI_IMAGE_MODEL`, or CLI options.
 
 For a relay that only supports Responses API image generation:
 

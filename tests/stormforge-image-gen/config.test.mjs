@@ -40,11 +40,11 @@ test("transparent background is rejected for gpt-image-2", () => {
 });
 
 
-test("default model is codex/gpt-image-2 without local overrides", async () => {
+test("default model is openai/gpt-image-2.6-flare without local overrides", async () => {
   const temp = await mkdtemp(path.join(os.tmpdir(), "stormforge-model-default-"));
   try {
     const config = await resolveGlobalConfig({}, { cwd: temp, homeDir: temp, env: {} });
-    assert.equal(config.model, "codex/gpt-image-2");
+    assert.equal(config.model, "openai/gpt-image-2.6-flare");
   } finally { await rm(temp, { recursive: true, force: true }); }
 });
 

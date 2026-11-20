@@ -5,7 +5,7 @@ description: Generate or edit raster images through an OpenAI-compatible Images 
 
 # StormForge Image Gen
 
-Use this skill for direct image generation and editing through an OpenAI-compatible Images API. It defaults to NxtPath and `codex/gpt-image-2` while allowing the base URL and image model to be configured.
+Use this skill for direct image generation and editing through an OpenAI-compatible Images API. It defaults to NxtPath and `openai/gpt-image-2.6-flare` while allowing the base URL and image model to be configured.
 
 ## When to use
 
@@ -25,7 +25,7 @@ Use `stormforge-responses-image-gen` instead when the relay only exposes `/respo
 - Node.js 20 or newer.
 - `OPENAI_API_KEY` for the selected relay.
 - Optional `OPENAI_BASE_URL`; default: `https://api.nxtpath.ai/v1`.
-- Optional `OPENAI_IMAGE_MODEL`; default: `codex/gpt-image-2`.
+- Optional `OPENAI_IMAGE_MODEL`; default: `openai/gpt-image-2.6-flare`.
 
 Never print, store in metadata, or commit API keys, image Base64 payloads, signed URLs, or complete raw API responses.
 

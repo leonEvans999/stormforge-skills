@@ -16,7 +16,7 @@ Defaults:
 
 ```text
 OPENAI_BASE_URL=https://api.nxtpath.ai/v1
-OPENAI_IMAGE_MODEL=codex/gpt-image-2
+OPENAI_IMAGE_MODEL=openai/gpt-image-2.6-flare
 size=2048x1152
 quality=high
 format=png
@@ -53,7 +53,7 @@ Example:
 
 ```json
 {
-  "model": "codex/gpt-image-2",
+  "model": "openai/gpt-image-2.6-flare",
   "size": "2048x1152",
   "quality": "high",
   "format": "png",
